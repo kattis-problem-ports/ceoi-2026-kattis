@@ -1,0 +1,60 @@
+\problemname{Towers}
+
+You have $n$ computers and $m$ towers all at distinct positions along a line.
+You need to pair computers using cables in such a way that every cable starts at
+some computer, visits some towers and ends at another computer. The cable can
+visit any of the towers (not just the ones between the computers) in an
+arbitrary order. It can skip towers by passing by without visiting them. It can
+also visit no towers at all and connect the two computers directly but it cannot
+connect a computer to itself. The number of computers is even.
+
+Let $a$ and $b$ be the positions of two computers and let $x_1, \ldots, x_k$ be
+positions of the towers the cable visits. The length of the cable is
+$|a-x_1| + |x_1-x_2| + \cdots + |x_{k-1}-x_k| + |x_k-b|$. For some cable we
+define its score as $f \cdot u - l$, where $l$ is its length, $f$ is some fixed
+constant and $u$ is the number of unique towers the cable visits among
+$x_1, \ldots, x_k$. Multiple cables can visit the same tower and that tower
+contributes to the score of each of those cables.
+
+You need to compute the maximum possible sum of cable scores for pairing up all
+computers (i.e. each computer has to belong to exactly one pair, or equivalently,
+it must be connected to exactly one cable).
+
+\section*{Input}
+The first line contains the number of test cases, $T$. The test cases follow one
+after another. Each test case consists of three lines. The first line contains
+three integers $n$, $m$ and $f$ --- the number of computers, the number of
+towers and the constant $f$. The second line contains $n$ integers
+$a_1, a_2, \ldots, a_n$ --- the positions of computers. The third line contains
+$m$ integers $b_1, b_2, \ldots, b_m$ --- the positions of towers.
+
+Let $N$ and $M$ be the sum of $n$ and $m$ through all test cases, respectively.
+The following limits hold:
+\begin{itemize}
+  \item $1 \leq T \leq 10^4$
+  \item $1 \leq N, M \leq 2 \cdot 10^5$
+  \item $0 \leq f \leq 10^9$
+  \item $n$ is even
+  \item $1 \leq a_i, b_i \leq 10^9$
+  \item All positions of computers and towers are unique (within an individual
+        test case).
+\end{itemize}
+
+\section*{Output}
+Output $T$ integers, each on its own line --- the maximum possible sum of scores
+of cables for each test case.
+
+\section*{Scoring}
+Your solution will be tested on a set of test groups.
+To earn points for a group, you must pass all test cases in that group.
+
+\noindent
+\begin{tabular}{| l | l | p{12cm} |}
+  \hline
+  \textbf{Group} & \textbf{Points} & \textbf{Constraints} \\ \hline
+  $1$ & $5$  & $N \leq 5000$, $m = 1$ \\ \hline
+  $2$ & $10$ & $T \leq 20$, $n \leq 10$, $m \leq 100$ \\ \hline
+  $3$ & $27$ & $N, M \leq 5000$ \\ \hline
+  $4$ & $21$ & $N \leq 5000$ \\ \hline
+  $5$ & $37$ & No additional constraints. \\ \hline
+\end{tabular}

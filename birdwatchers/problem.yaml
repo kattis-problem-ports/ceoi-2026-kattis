@@ -1,0 +1,15 @@
+uuid: 1d6a83f5-70e4-4b29-8c17-5f92b0e3ac64
+source: Central European Olympiad in Informatics (CEOI) 2026, Day 1
+source_url: https://ceoi2026.acm.si/
+license: unknown
+type: scoring
+
+limits:
+  # slowest AC 1.85s uncontended (tomaz, group4) -> 10s, the original contest
+  # limit. The earlier 2.6 came from a 3.71s measurement on a loaded machine and
+  # landed on 5s instead; not load-bearing, both solutions score 100 either way.
+  time_multiplier: 5.1
+  memory: 512 # In MiB; the original contest limit
+
+grading:
+  show_test_data_groups: true

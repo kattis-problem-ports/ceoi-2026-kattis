@@ -1,0 +1,96 @@
+\problemname{Vim}
+
+It would be hard to find anything more geeky than the oldschool Vim --- an
+editor in which we can do things that we could only dream of in ``regular''
+editors. That is, if we are willing to invest a week of learning and a month of
+practice so that the unusual but powerful commands it offers become our ``muscle
+memory''. Well, just like in other editors, in Vim we have a cursor, which is
+always located on one of the characters. Initially, it is located on the first
+character of the text, and just like in other editors, in Vim there is a
+clipboard, which is intended for storing (and indirectly copying and moving)
+pieces of text. The clipboard is initially empty.
+
+In this task, we will assume that there is exactly one \texttt{-} (minus)
+character in the editor at the beginning, and our goal is to finish with exactly
+$n$ consecutive minus signs. We will use four commands to help us with this:
+\begin{itemize}
+  \item \texttt{h}: If the cursor is on the first character, then this command
+        does nothing, otherwise it moves the cursor to the character on the
+        left.
+  \item \texttt{l}: If the cursor is on the last character, then this command
+        does nothing, otherwise it moves the cursor to the character on the
+        right.
+  \item \texttt{Y}: The sequence of characters extending from the cursor
+        position to the end of the text is copied to the clipboard,
+        ``overwriting'' any previous contents of the clipboard. (If the cursor
+        is on the first character of the text, the entire text will be copied to
+        the clipboard.)
+  \item \texttt{P}: A copy of the text stored in the clipboard is inserted
+        before the character on which the cursor is located, and the cursor is
+        moved to the last inserted character. The contents of the clipboard are
+        not changed. If the clipboard is empty, nothing happens.
+\end{itemize}
+
+Write a program that reads the number $n$ and prints the minimum number of
+commands needed to finish with exactly $n$ consecutive \texttt{-} characters in
+Vim under the described conditions. The program should also print an example of
+a sequence with the minimum number of commands.
+
+\section*{Input}
+The first line contains the number of test cases $t$. The next $t$ lines contain
+test cases with the desired string length $n$.
+
+The following limits hold:
+\begin{itemize}
+  \item $1 \leq t \leq 100$
+  \item $1 \leq n \leq 10^7$
+\end{itemize}
+
+\section*{Output}
+For each test case, print the required minimum number of commands and an example
+of such a sequence of commands on its own line.
+
+Any sequence of commands achieving the minimum is accepted.
+
+\section*{Scoring}
+Your solution will be tested on a set of test groups.
+To earn points for a group, you must pass all test cases in that group.
+
+If you print only the correct number of commands, but no example or an incorrect
+example of a sequence of commands, you will receive half the points for that
+subtask.
+
+\noindent
+\begin{tabular}{| l | l | p{12cm} |}
+  \hline
+  \textbf{Group} & \textbf{Points} & \textbf{Constraints} \\ \hline
+  $1$ & $20$ & $n \leq 100$ \\ \hline
+  $2$ & $8$  & $n \leq 1\,000$ \\ \hline
+  $3$ & $18$ & $n \leq 10^4$ \\ \hline
+  $4$ & $18$ & $n \leq 10^5$ \\ \hline
+  $5$ & $18$ & $n \leq 10^6$ \\ \hline
+  $6$ & $18$ & No additional constraints. \\ \hline
+\end{tabular}
+
+\section*{Explanation of Samples}
+As we can see in the following table, in the first case, the sequence
+\texttt{YPYPhPYPPP} gives the correct result. The \texttt{=} character in the
+Screen column represents the \texttt{-} character on which the cursor is
+located.
+
+\noindent
+\begin{tabular}{| r | c | l | l |}
+  \hline
+  \textbf{Step} & \textbf{Command} & \textbf{Screen} & \textbf{Clipboard} \\ \hline
+  $0$  &            & \texttt{=}                     & (empty)          \\ \hline
+  $1$  & \texttt{Y} & \texttt{=}                     & \texttt{-}       \\ \hline
+  $2$  & \texttt{P} & \texttt{=-}                    & \texttt{-}       \\ \hline
+  $3$  & \texttt{Y} & \texttt{=-}                    & \texttt{--}      \\ \hline
+  $4$  & \texttt{P} & \texttt{-=--}                  & \texttt{--}      \\ \hline
+  $5$  & \texttt{h} & \texttt{=---}                  & \texttt{--}      \\ \hline
+  $6$  & \texttt{P} & \texttt{-=----}                & \texttt{--}      \\ \hline
+  $7$  & \texttt{Y} & \texttt{-=----}                & \texttt{-----}   \\ \hline
+  $8$  & \texttt{P} & \texttt{-----=-----}           & \texttt{-----}   \\ \hline
+  $9$  & \texttt{P} & \texttt{---------=------}      & \texttt{-----}   \\ \hline
+  $10$ & \texttt{P} & \texttt{-------------=-------} & \texttt{-----}   \\ \hline
+\end{tabular}

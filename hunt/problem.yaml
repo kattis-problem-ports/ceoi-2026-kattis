@@ -1,0 +1,16 @@
+uuid: 09b3ab69-7cc9-4696-891f-3c46823082fe
+source: Central European Olympiad in Informatics (CEOI) 2026, Day 1
+source_url: https://ceoi2026.acm.si/
+license: unknown
+type: scoring
+validation: custom score
+
+limits:
+  # slowest AC 0.95s (uncontended) -> 8s, the original contest limit. Not
+  # load-bearing: the problem is scored on query count, not time, and the
+  # reference solution has 8x headroom.
+  time_multiplier: 8
+  memory: 256 # In MiB; the original contest limit
+
+grading:
+  show_test_data_groups: true

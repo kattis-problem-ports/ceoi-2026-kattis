@@ -1,0 +1,55 @@
+\problemname{Cave}
+
+Cave explorers have discovered a long, low cave with many mineral deposit
+formations called stalagmites (growing from the ground up) and stalactites
+(hanging from the ceiling down). The ground and the ceiling of the cave are
+parallel. The cave has height $v$ meters and length $n$ meters, and at each
+meter of the cave either a stalagmite grows from the ground or a stalactite
+hangs from the ceiling. For each formation, we know its type (stalagmite or
+stalactite) and its size $k_i$ ($1 \leq k_i < v$).
+
+In the cave, they want to install a tourist railway that will run parallel to
+the ground and the ceiling at some integer height $y$ ($1 \leq y \leq v$).
+Since stalagmites with size $k_i \geq y$ and stalactites with size
+$k_i > v - y$ would obstruct the railway, they will need to be removed.
+
+Write a program that finds the heights $y$ of the railway such that the minimum
+number of formations (stalagmites and stalactites) would need to be removed for
+constructing the railway at that height.
+
+\section*{Input}
+In the first line, two integers $v$ and $n$ are given, separated by a space.
+
+The second line contains a string of length $n$ consisting of the characters
+\texttt{M} or \texttt{T}, where the $i$-th character in the string represents
+the type of the formation at the $i$-th meter of the cave. If it is \texttt{M},
+it is a stalagmite growing from the ground; if it is \texttt{T}, it is a
+stalactite hanging from the ceiling.
+
+The third line contains $n$ space-separated integers $k_i$, where the $i$-th
+number represents the size of the $i$-th formation.
+
+The following limits hold:
+\begin{itemize}
+  \item $1 \leq v \leq 10^{18}$
+  \item $1 \leq n \leq 10^5$
+  \item $1 \leq k_i < v$ for each $i$ such that $1 \leq i \leq n$
+\end{itemize}
+
+\section*{Output}
+Output the minimum number of formations that need to be removed, and the number
+of railway heights at which this minimum can be achieved. Print both values on
+the same line, separated by a single space.
+
+\section*{Scoring}
+Your solution will be tested on a set of test groups.
+To earn points for a group, you must pass all test cases in that group.
+
+\noindent
+\begin{tabular}{| l | l | p{12cm} |}
+  \hline
+  \textbf{Group} & \textbf{Points} & \textbf{Constraints} \\ \hline
+  $1$ & $20$ & $n \leq 1\,000$ and $v \leq 1\,000$ \\ \hline
+  $2$ & $40$ & $v \leq 10^6$ \\ \hline
+  $3$ & $40$ & No additional constraints. \\ \hline
+\end{tabular}

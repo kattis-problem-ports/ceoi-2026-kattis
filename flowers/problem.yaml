@@ -1,0 +1,12 @@
+uuid: 9e31c47a-582b-4f06-b3d9-6a0e28f145c7
+source: Central European Olympiad in Informatics (CEOI) 2026, Day 2
+source_url: https://ceoi2026.acm.si/
+license: unknown
+type: scoring
+
+limits:
+  time_multiplier: 3 # slowest AC 0.036s; any multiplier <= 27 lands on Kattis 1s floor
+  memory: 256 # In MiB; the original contest limit
+
+grading:
+  show_test_data_groups: true

@@ -1,0 +1,12 @@
+uuid: 7a4e2b16-9c53-4d80-a6f2-1b8d5e30c9a4
+source: Central European Olympiad in Informatics (CEOI) 2026, Practice session
+source_url: https://ceoi2026.acm.si/
+license: unknown
+type: scoring
+
+limits:
+  time_multiplier: 2.8 # model 2.78s uncontended -> 8s, the original contest limit
+  memory: 768 # In MiB; the original contest limit
+
+grading:
+  show_test_data_groups: true

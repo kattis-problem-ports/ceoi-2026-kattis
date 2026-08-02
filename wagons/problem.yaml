@@ -1,0 +1,13 @@
+uuid: 0a5f3d81-97c4-4e62-b71a-2d8c604fe319
+source: Central European Olympiad in Informatics (CEOI) 2026, Practice session
+source_url: https://ceoi2026.acm.si/
+license: unknown
+type: scoring
+validation: custom interactive score
+
+limits:
+  time_multiplier: 3 # slowest AC 2.75s -> 9s; the original 5s assumed an in-process library, this port pays pipe round-trips
+  memory: 256 # In MiB; the original contest limit
+
+grading:
+  show_test_data_groups: true
