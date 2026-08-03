@@ -4,19 +4,29 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include <cctype>
 using namespace std;
 
 typedef long long ll;
 
-// Reads the next line that is not entirely whitespace, with trailing
-// whitespace (including CR) removed and leading whitespace stripped.
+// What counts as whitespace here MUST match what split_tokens() below skips, because
+// next_line() decides whether a line exists and split_tokens() decides what is on it.
+// istringstream's >> skips every character isspace() accepts -- which includes '\v' and
+// '\f' -- so a stricter next_line() would hand back a "non-blank" line that then yields
+// zero tokens. (The cast is required: isspace() on a negative char is undefined.)
+static bool is_space(char c) {
+    return isspace(static_cast<unsigned char>(c)) != 0;
+}
+
+// Reads the next line that is not entirely whitespace, with surrounding whitespace
+// (including CR) removed.
 static bool next_line(istream& in, string& line) {
     while (getline(in, line)) {
-        while (!line.empty() &&
-               (line.back() == '\r' || line.back() == ' ' || line.back() == '\t'))
+        while (!line.empty() && is_space(line.back()))
             line.pop_back();
-        size_t s = line.find_first_not_of(" \t");
-        if (s == string::npos) continue; // blank line, skip
+        size_t s = 0;
+        while (s < line.size() && is_space(line[s])) s++;
+        if (s == line.size()) continue; // blank line, skip
         line.erase(0, s);
         return true;
     }
@@ -100,6 +110,12 @@ int main(int argc, char** argv) {
         }
         vector<string> at;
         split_tokens(line, at);
+        if (at.empty()) {
+            // Unreachable while next_line() and split_tokens() agree on whitespace, but
+            // contestant output is arbitrary: never index at[0] without checking.
+            author_message("Line %lld contains no token", i + 1);
+            wrong_answer("Malformed line");
+        }
         if (at.size() > 2) {
             author_message("Line %lld has more than two tokens; expected the "
                            "command count and optionally one command sequence", i + 1);

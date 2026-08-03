@@ -8,6 +8,8 @@
 
 use_solution koci.cpp
 
+compile special_n.py
+
 samplegroup
 limits maxn=100
 # The statement walks through the official sample sequence step by step, so the
@@ -24,6 +26,12 @@ group group2 8
 limits maxn=1000
 include_group group1
 tg_manual ../data_source/group2
+# Every n whose optimum the natural greedy misses. The original data covers 17
+# of the 22 (150, 190, 201, 217 and 277 were untested), and n = 1 -- the only
+# length answered by the empty command sequence -- was untested too. The rest of
+# the t budget goes on the largest of them, which is what a solution that
+# rebuilds an O(n^2) fallback per test case has to survive.
+tc special-n special_n maxn=1000 t=100
 
 group group3 18
 limits maxn=10000
