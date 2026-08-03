@@ -61,13 +61,13 @@ your score (more on scoring below).
 
 To access the library, your program should include the header file
 \texttt{treasurehuntlib.h}, that is, write \texttt{\#include "treasurehuntlib.h"}
-at the top of your program.
+at the top of your program. The library exists only for C++, so this task can only
+be solved in C++.
 
 The header file is provided as an attachment, together with
 \texttt{treasurehuntlib-public.cpp}, a simple implementation of the library that
-you can use while developing your solution, and \texttt{hunt\_sample.cpp}, a small
-example solution. To compile the library together with your program, simply add
-its name as a parameter to the compiler, e.g.
+you can use while developing your solution. To compile the library together with
+your program, simply add its name as a parameter to the compiler, e.g.
 
 \begin{verbatim}
 g++ foo.cpp treasurehuntlib-public.cpp
@@ -79,9 +79,16 @@ The implementation in \texttt{treasurehuntlib-public.cpp} supports, in addition 
 the above declarations, another function called
 \texttt{void InitFromFile(const char *fileName)}, which reads a list of treasure
 hunts from a file and lets you play the game with those instead of generating its
-own random treasure hunts. You will find more details inside
-\texttt{treasurehuntlib-public.cpp} itself; the attachment \texttt{sample.in} is
-such a file, holding the single treasure hunt of the example below.
+own random treasure hunts. It is not declared in the header file, so declare it
+yourself where you use it:
+
+\begin{verbatim}
+extern void InitFromFile(const char *fileName);
+\end{verbatim}
+
+The comments at the end of \texttt{treasurehuntlib-public.cpp} describe the file
+format; the attachment \texttt{sample.in} is such a file, holding the single
+treasure hunt of the example below.
 
 On the evaluation server, a different implementation of the library will be used,
 so you should not make any assumptions about how exactly the implementation
@@ -165,19 +172,9 @@ therefore needs to finish the search gracefully by calling \texttt{NextHunt}.
 \end{tabular}
 
 \section*{Example}
-\noindent
-\begin{tabular}{| l | l |}
-  \hline
-  \textbf{Call} & \textbf{Return value} \\ \hline
-  \texttt{NextHunt(N, K)} & $N = 4$, $K = 1$ \\ \hline
-  \texttt{Query(2, 0)}    & \texttt{DIR\_DOWN + DIR\_RIGHT} $= 9$ \\ \hline
-  \texttt{Query(3, 1)}    & \texttt{DIR\_DOWN} \\ \hline
-  \texttt{Query(3, 2)}    & \texttt{TREASURE} \\ \hline
-  \texttt{NextHunt(N, K)} & $N = -1$, $K = -1$ \\ \hline
-\end{tabular}
-
-\section*{Comment}
-There is no sample input or output: your program never reads or writes anything
-itself, so the table above is the whole interaction. The single chest sits at
-$(3, 2)$, and the attachment \texttt{sample.in} replays exactly this hunt against
-the provided local implementation of the library.
+The sample interaction below is one treasure hunt on a $4 \times 4$ grid holding a
+single chest, which sits at $(3, 2)$: the calls your program makes into the library
+and the values the library gives back. None of it passes through standard input or
+standard output, these are ordinary function calls. The attachment
+\texttt{sample.in} describes this very hunt, so \texttt{InitFromFile} will replay
+it for you locally.

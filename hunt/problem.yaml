@@ -3,13 +3,12 @@ source: Central European Olympiad in Informatics (CEOI) 2026, Day 1
 source_url: https://ceoi2026.acm.si/
 license: cc by-sa
 type: scoring
-validation: custom score
+validation: custom score interactive
 
 limits:
-  # slowest AC 0.95s (uncontended) -> 8s, the original contest limit. Not
-  # load-bearing: the problem is scored on query count, not time, and the
-  # reference solution has 8x headroom.
-  time_multiplier: 8
+  # We have one that does max queries in a dumb way.
+  # 4x that is very generous
+  time_multiplier: 4
   memory: 256 # In MiB; the original contest limit
 
 grading:
