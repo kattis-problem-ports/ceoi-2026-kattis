@@ -5,10 +5,7 @@ license: cc by-sa
 type: scoring
 
 limits:
-  # slowest AC 1.85s uncontended (tomaz, group4) -> 10s, the original contest
-  # limit. The earlier 2.6 came from a 3.71s measurement on a loaded machine and
-  # landed on 5s instead; not load-bearing, both solutions score 100 either way.
-  time_multiplier: 5.1
+  time_multiplier: 1.5
   memory: 512 # In MiB; the original contest limit
 
 grading:
