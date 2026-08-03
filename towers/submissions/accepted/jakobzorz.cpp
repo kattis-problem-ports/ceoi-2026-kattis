@@ -1,3 +1,7 @@
+// Port modification (2026-08-03): the total `res` and the output now use
+// __int128 — the true answer on three group-5 cases exceeds LLONG_MAX and the
+// original int64 code printed it wrapped mod 2^64. All per-element values
+// (lc/rc, cr, multiset contents) still fit int64; only the total changed.
 #include<iostream>
 #include<algorithm>
 #include<vector>
@@ -54,7 +58,7 @@ void solve(){
     reverse(towers.begin(),towers.end());
     reverse(rc.begin(),rc.end());
 
-    ll res=0;
+    __int128 res=0;
     vector<ll>arr;
     reverse(towers.begin(),towers.end());
     int last=max(towers[0],computers.back());
@@ -74,7 +78,12 @@ void solve(){
     }
     for(ll i:s)
         res+=i;
-    cout<<res<<"\n";
+    { __int128 ans = res;
+      if (ans < 0) { cout << '-'; ans = -ans; }
+      char buf[48]; int p = 0;
+      do { buf[p++] = char('0' + int(ans % 10)); ans /= 10; } while (ans > 0);
+      while (p > 0) cout << buf[--p];
+      cout << "\n"; }
 }
 
 int main(){

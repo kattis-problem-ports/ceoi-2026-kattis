@@ -1,3 +1,7 @@
+// Port modification (2026-08-03): the final accumulation (baseline/score) and
+// the output now use __int128 — the true answer on three group-5 cases exceeds
+// LLONG_MAX and the original int64 code printed it wrapped mod 2^64. All
+// per-element values still fit int64 comfortably; only the totals changed type.
 #define _CRT_SECURE_NO_WARNINGS
 #include <random>
 #include <cstdio>
@@ -98,7 +102,7 @@ int main()
             }
         }
         // Calculate h.
-        llint baseline = 0;
+        __int128 baseline = 0;
         for (int i = 0; i < nComps; ++i) {
             llint hLeft = f1[i] - g2[i], hRight = f3[i] + g2[i];
             baseline += hLeft;
@@ -126,7 +130,7 @@ int main()
             }
         }
         Assert(nSelected == nComps / 2);
-        llint score = 0; for (auto &[hk, k] : heap) score += hk;
+        __int128 score = 0; for (auto &[hk, k] : heap) score += hk;
         // Compare with the dynamic programming solution.
         if (SlowChecks)
         {
@@ -149,7 +153,12 @@ int main()
             }
             Assert(fNew[nComps / 2] == score);
         }
-        printf("%lld\n", baseline - score);
+        { __int128 ans = baseline - score;
+          if (ans < 0) { putchar('-'); ans = -ans; }
+          char buf[48]; int p = 0;
+          do { buf[p++] = char('0' + int(ans % 10)); ans /= 10; } while (ans > 0);
+          while (p > 0) putchar(buf[--p]);
+          putchar('\n'); }
     }
     return 0;
 }

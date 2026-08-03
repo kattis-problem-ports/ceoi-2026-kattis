@@ -1,3 +1,7 @@
+// Port modification (2026-08-03): the total `score` and the output now use
+// __int128 — the true answer on three group-5 cases exceeds LLONG_MAX and the
+// original int64 code printed it wrapped mod 2^64. All per-element values
+// (extensions, deltas, heap contents) still fit int64; only the total changed.
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -72,7 +76,7 @@ int main() {
         auto left_ext  = compute_ext_left(a, b, f);
         auto left_cab  = compute_cable_left(a, b, f);
         // baseline: all computers act as right endpoints
-        int64 score = 0;
+        __int128 score = 0;
         for (int i = 0; i < n; i++) score += right_ext[i] + left_cab[i];
         // benefit of switching to left endpoint
         vector<int64> delta(n);
@@ -89,7 +93,12 @@ int main() {
                 pq.pop();
             }
         }
-        cout << score << endl;
+        { __int128 ans = score;
+          if (ans < 0) { cout << '-'; ans = -ans; }
+          char buf[48]; int p = 0;
+          do { buf[p++] = char('0' + int(ans % 10)); ans /= 10; } while (ans > 0);
+          while (p > 0) cout << buf[--p];
+          cout << endl; }
     }
     return 0;
 }

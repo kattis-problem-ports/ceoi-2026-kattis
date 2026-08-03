@@ -2,7 +2,12 @@
 
 . ../../testdata_tools/gen.sh
 
-use_solution janez.cpp opt # -O2: all three reference solutions trip UBSan on their -inf sentinel
+# claude.cpp is the overflow-safe (__int128) model solution; the original
+# reference solutions accumulated the answer in int64 and wrapped mod 2^64 on
+# three group-5 cases, which is what the official .out files contain. All four
+# accepted solutions (references patched to __int128 totals) now agree on all
+# cases and are UBSan/ASan-clean, so the default sanitizer build is used.
+use_solution claude.cpp
 
 samplegroup
 limits maxt=20 maxn=10 maxm=100
