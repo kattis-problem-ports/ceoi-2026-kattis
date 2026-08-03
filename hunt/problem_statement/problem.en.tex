@@ -172,9 +172,21 @@ therefore needs to finish the search gracefully by calling \texttt{NextHunt}.
 \end{tabular}
 
 \section*{Example}
-The sample interaction below is one treasure hunt on a $4 \times 4$ grid holding a
-single chest, which sits at $(3, 2)$: the calls your program makes into the library
-and the values the library gives back. None of it passes through standard input or
-standard output, these are ordinary function calls. The attachment
-\texttt{sample.in} describes this very hunt, so \texttt{InitFromFile} will replay
-it for you locally.
+The table below shows one treasure hunt on a $4 \times 4$ grid holding a single
+chest, which sits at $(3, 2)$: the calls your program makes into the library and
+the values the library gives back. None of it passes through standard input or
+standard output, these are ordinary function calls, so there is no sample input or
+output and the table is the whole interaction. The attachment \texttt{sample.in}
+describes this very hunt, so \texttt{InitFromFile} will replay it for you locally.
+
+\begin{center}
+\begin{tabular}{| l | l |}
+  \hline
+  \textbf{Call} & \textbf{Return value} \\ \hline
+  \texttt{NextHunt(N, K)} & $N = 4$, $K = 1$ \\ \hline
+  \texttt{Query(2, 0)}    & \texttt{DIR\_DOWN + DIR\_RIGHT} $= 9$ \\ \hline
+  \texttt{Query(3, 1)}    & \texttt{DIR\_DOWN} $= 8$ \\ \hline
+  \texttt{Query(3, 2)}    & \texttt{TREASURE} $= 0$ \\ \hline
+  \texttt{NextHunt(N, K)} & $N = -1$, $K = -1$ \\ \hline
+\end{tabular}
+\end{center}
