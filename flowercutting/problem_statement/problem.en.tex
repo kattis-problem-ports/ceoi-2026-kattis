@@ -57,19 +57,29 @@ To earn points for a group, you must pass all test cases in that group.
 \end{tabular}
 
 \section*{Explanation of Samples}
-\begin{figure}[h]
-  \centering
+% Plain `center` rather than `figure`: \caption* renders as a literal "Figure 1: *" in both
+% the Kattis PDF and HTML output, and a floating `figure` migrates away from this section
+% (with [htp] both illustrations landed a page above their own heading). A non-float keeps
+% the caption text intact and the reading order fixed.
+\begin{center}
   \includegraphics[width=0.55\textwidth]{flowers-1}
-  \caption*{The flowers in the example before any cutting. One can check that no
-  additional connections can form based on the described growth procedure.}
-\end{figure}
 
-\begin{figure}[h]
-  \centering
+  \vspace{0.5cm}
+  \parbox{\linewidth}{\centering
+    The flowers in the example before any cutting. One can check that no
+    additional connections can form based on the described growth procedure.
+  }
+\end{center}
+
+\begin{center}
   \includegraphics[width=0.55\textwidth]{flowers-2}
-  \caption*{The flowers in the example after the cutting have $2$ connections
-  less. The connection between $1$ and $2$ can regrow because flowers $1$ and
-  $2$ are both connected to flowers $4$ and $5$. Similarly, the connection
-  between $4$ and $5$ can regrow because flowers $4$ and $5$ are both connected
-  to flowers $1$ and $2$.}
-\end{figure}
+
+  \vspace{0.5cm}
+  \parbox{\linewidth}{\centering
+    The flowers in the example after the cutting have $2$ connections less. The
+    connection between $1$ and $2$ can regrow because flowers $1$ and $2$ are
+    both connected to flowers $4$ and $5$. Similarly, the connection between $4$
+    and $5$ can regrow because flowers $4$ and $5$ are both connected to
+    flowers $1$ and $2$.
+  }
+\end{center}

@@ -1,7 +1,6 @@
 #include "validate.h"
 
 #include <string>
-#include <sstream>
 #include <vector>
 #include <algorithm>
 #include <cctype>
@@ -9,11 +8,11 @@ using namespace std;
 
 typedef long long ll;
 
-// What counts as whitespace here MUST match what split_tokens() below skips, because
-// next_line() decides whether a line exists and split_tokens() decides what is on it.
-// istringstream's >> skips every character isspace() accepts -- which includes '\v' and
-// '\f' -- so a stricter next_line() would hand back a "non-blank" line that then yields
-// zero tokens. (The cast is required: isspace() on a negative char is undefined.)
+// What counts as whitespace here MUST match what split_head_and_rest() below skips,
+// because next_line() decides whether a line exists and split_head_and_rest() decides
+// what is on it: a stricter next_line() would hand back a "non-blank" line that then
+// yields no tokens at all. (The cast is required: isspace() on a negative char is
+// undefined.)
 static bool is_space(char c) {
     return isspace(static_cast<unsigned char>(c)) != 0;
 }
@@ -33,11 +32,32 @@ static bool next_line(istream& in, string& line) {
     return false;
 }
 
-// Splits into at most three whitespace-separated tokens (a third one is an error).
-static void split_tokens(const string& line, vector<string>& out) {
-    istringstream iss(line);
-    string tok;
-    while (out.size() < 3 && iss >> tok) out.push_back(tok);
+// Splits `line` into its first whitespace-separated token (`head`, the command count) and
+// the concatenation of every remaining token (`rest`, the example sequence).
+//
+// Concatenating rather than requiring one token is deliberate: the statement asks for "the
+// required minimum number of commands and an example of such a sequence of commands", and
+// says nothing about the sequence being free of whitespace. A contestant who writes
+// `10 Y P Y P h P Y P P P` has produced a perfectly good example, and separators cannot
+// carry meaning when the alphabet is {h, l, Y, P}. Joining can never let a wrong answer
+// through: the result still has to be exactly `count` commands ending at exactly n.
+//
+// Tokenising in place, rather than through an istringstream, keeps peak memory at about
+// one extra copy of the line instead of three. Contestant output is arbitrary, and a
+// single line can be enormous.
+static void split_head_and_rest(const string& line, string& head, string& rest) {
+    size_t i = 0, n = line.size();
+    while (i < n && is_space(line[i])) i++;
+    size_t s = i;
+    while (i < n && !is_space(line[i])) i++;
+    head.assign(line, s, i - s);
+    rest.clear();
+    while (i < n) {
+        while (i < n && is_space(line[i])) i++;
+        size_t t = i;
+        while (i < n && !is_space(line[i])) i++;
+        rest.append(line, t, i - t);
+    }
 }
 
 static bool parse_ll(const string& s, ll& val) {
@@ -87,20 +107,21 @@ int main(int argc, char** argv) {
         if (!(judge_in >> n[i]))
             judge_error("could not read n for test case %lld", i + 1);
 
-    // Skip to the start of the judge answer's first line.
-    string line;
+    string line, head, seq;
     double worst = 1.0;
 
     for (ll i = 0; i < t; i++) {
         // ---- judge's answer: authoritative minimum command count ----
         if (!next_line(judge_ans, line))
             judge_error("judge answer ran out at test case %lld", i + 1);
-        vector<string> jt;
-        split_tokens(line, jt);
+        split_head_and_rest(line, head, seq);
         ll jcount;
-        if (jt.empty() || !parse_ll(jt[0], jcount))
+        if (!parse_ll(head, jcount))
             judge_error("judge answer for test case %lld is malformed", i + 1);
-        if (jcount > 0 && (jt.size() < 2 || !valid_sequence(jt[1], n[i], jcount)))
+        // Unconditional, including jcount == 0: valid_sequence("", n, 0) is true exactly
+        // when n == 1, which is the only length reachable without commands. So this also
+        // catches a judge answer of a bare "0" against some n > 1.
+        if (!valid_sequence(seq, n[i], jcount))
             judge_error("judge answer for test case %lld is not a valid sequence", i + 1);
 
         // ---- contestant's answer ----
@@ -108,21 +129,14 @@ int main(int argc, char** argv) {
             author_message("Output ended after %lld of %lld test cases", i, t);
             wrong_answer("Too few lines of output");
         }
-        vector<string> at;
-        split_tokens(line, at);
-        if (at.empty()) {
-            // Unreachable while next_line() and split_tokens() agree on whitespace, but
-            // contestant output is arbitrary: never index at[0] without checking.
-            author_message("Line %lld contains no token", i + 1);
-            wrong_answer("Malformed line");
-        }
-        if (at.size() > 2) {
-            author_message("Line %lld has more than two tokens; expected the "
-                           "command count and optionally one command sequence", i + 1);
-            wrong_answer("Malformed line");
-        }
+        split_head_and_rest(line, head, seq);
+
+        // Only the command count can earn a wrong answer. Anything wrong with the example
+        // costs half the points, never all of them -- that is what the statement's
+        // "no example or an incorrect example" clause promises, and it must include an
+        // example we could not make sense of, not just one that simulates incorrectly.
         ll acount;
-        if (!parse_ll(at[0], acount)) {
+        if (!parse_ll(head, acount)) {
             author_message("Line %lld does not start with a non-negative integer", i + 1);
             wrong_answer("Malformed command count");
         }
@@ -131,17 +145,14 @@ int main(int argc, char** argv) {
             wrong_answer("Wrong command count");
         }
 
-        // The count is right. Full credit additionally needs a valid example.
-        bool has_seq = (at.size() == 2);
-        bool ok;
-        if (jcount == 0) {
-            // n = 1: the empty sequence is the correct example, and it cannot
-            // be printed as a token, so a bare count is fully correct here.
-            ok = !has_seq || valid_sequence(at[1], n[i], 0);
-        } else {
-            ok = has_seq && valid_sequence(at[1], n[i], acount);
+        // The count is right. Full credit additionally needs a valid example. An empty
+        // `seq` means none was printed, which is valid only for n = 1 (jcount == 0), where
+        // the empty command sequence is the right answer and cannot be printed as a token.
+        if (!valid_sequence(seq, n[i], acount)) {
+            author_message("Line %lld: command count is right but the example sequence is "
+                           "missing or invalid", i + 1);
+            worst = min(worst, 0.5);
         }
-        if (!ok) worst = min(worst, 0.5);
     }
 
     if (worst < 1.0)
